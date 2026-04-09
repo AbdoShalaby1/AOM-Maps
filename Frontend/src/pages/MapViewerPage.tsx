@@ -1,8 +1,3 @@
-/**
- * MapViewerPage Component
- * Main page component that integrates MapCanvas, tooltip, and services
- */
-
 import React, { useEffect, useState, useCallback,useRef } from 'react';
 import MapCanvas from '../components/MapCanvas';
 import CountryTooltip from '../components/CountryTooltip';
@@ -58,6 +53,7 @@ const justClickedRef = useRef(false);
   useEffect(() => {
   if (!country || isLoading || !GeoJsonService.IsCountryValid(country.replaceAll('-',' '))) 
     {
+      setFocusBbox(null);
       navigate('/');
       return;
     }
@@ -69,9 +65,10 @@ const justClickedRef = useRef(false);
   if (!justClickedRef.current) {
     // Direct URL navigation → need to zoom manually
     const feature = GeoJsonService.getFeatures().find(
-      f => f.properties.name?.toLowerCase() === country.toLowerCase()
+      f => f.properties.name?.toLowerCase() === country.toLowerCase().replaceAll('-',' ')
     );
     if (feature?.focusBbox) {
+      console.log(feature.focusBbox);
       setFocusBbox(feature.focusBbox);
     }
   } else {

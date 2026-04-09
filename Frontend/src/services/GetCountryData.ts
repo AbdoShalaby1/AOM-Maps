@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Fallback values defined as constants
-const DEFAULT_BASE_URL = 'https://localhost:7221';
+const DEFAULT_BASE_URL = 'https://aom-maps.runasp.net';
 const DEFAULT_TIMEOUT = 1000000;
 
 const api = axios.create({

@@ -105,9 +105,24 @@ class GeoJsonService {
         Math.max(...mainlandLons),
         Math.max(...mainlandLats)
       ];
+      if (["Samoa","American Samoa", "Tonga", "Wallis and Futuna"].includes(feature.properties.name))
+        {
+        feature.focusBbox[0] += 360;
+        feature.focusBbox[2] += 360;
+      }
+      if (feature.properties.name === "Wallis and Futuna")
+      {
+        feature.focusBbox[0] -= 5;
+        feature.focusBbox[2] -= 5;
+      }
     } else {
       // For simple Polygons, focusBox is the same as bbox
       feature.focusBbox = feature.bbox;
+      if (feature.properties.name === "Niue")
+      {
+        feature.focusBbox[0] += 360;
+        feature.focusBbox[2] += 360;
+      }
     }
   });
 }
@@ -120,35 +135,37 @@ class GeoJsonService {
    * then try the ray casting algorithm
    */
   getCountryFeature(lat: number, lon: number): GeoJsonFeature | null {
-    if (!this.geoJsonData) return null;
+  if (!this.geoJsonData) return null;
 
-    for (const feature of this.geoJsonData.features) {
-      const bbox = feature.bbox;
-      if (!bbox) continue;
+  for (const feature of this.geoJsonData.features) {
+    const bbox = feature.bbox;
+    if (!bbox) continue;
 
-      // Quick bbox check
-      // if not inside: do not calculate using the complex borders
-      if (lon < bbox[0] || lon > bbox[2] || lat < bbox[1] || lat > bbox[3]) {
-        continue;
-      }
-
-      // Point-in-polygon test
-      const polygons = feature.geometry.type === 'Polygon'
-        ? [feature.geometry.coordinates]
-        : feature.geometry.coordinates;
-
-      const isInside = polygons.some(polygon => {
-        const exteriorRing = polygon[0]; // Exterior ring is always first
-        return this.isPointInPolygon(lat, lon, exteriorRing);
-      });
-
-      if (isInside) {
-        return feature;
-      }
+    if (lon < bbox[0] || lon > bbox[2] || lat < bbox[1] || lat > bbox[3]) {
+      continue;
     }
 
-    return null;
+    const polygons = feature.geometry.type === 'Polygon'
+      ? [feature.geometry.coordinates]
+      : feature.geometry.coordinates;
+
+    const isInside = polygons.some(polygon => {
+      const [exteriorRing, ...holes] = polygon;
+      const inMainShape = this.isPointInPolygon(lat, lon, exteriorRing);
+      if (!inMainShape) return false;
+
+      const inAHole = holes.some((hole: number[][]) => this.isPointInPolygon(lat, lon, hole));
+      
+      return !inAHole;
+    });
+
+    if (isInside) {
+      return feature;
+    }
   }
+
+  return null;
+}
 
   /**
    * Ray casting algorithm for point-in-polygon detection:

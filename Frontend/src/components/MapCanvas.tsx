@@ -14,7 +14,7 @@ function performZoom(
   const bottomRight = CoordinateService.latLonToImageCoordinates(minLat, maxLon);
   const imageSize = viewerInstance.world.getItemAt(0).getContentSize();
   const width = (bottomRight.x - topLeft.x) / imageSize.x;
-  const height = (bottomRight.y - topLeft.y) / imageSize.x;
+  const height = (bottomRight.y - topLeft.y) / imageSize.y;
   const x = topLeft.x / imageSize.x;
   const y = topLeft.y / imageSize.x;
   const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches;
@@ -33,6 +33,7 @@ function performZoom(
   if (isMobile) {
     paddedRect.y += paddedRect.height * 0.4;
   }
+  console.log("Zoomed!");
   viewerInstance.viewport.fitBoundsWithConstraints(paddedRect, false);
 }
 
@@ -200,6 +201,7 @@ useEffect(() => {
 }, [mapMode]);
 
 useEffect(() => {
+  console.log("Bbox Changed");
   if (!focusBbox) return;
   const vi = viewerRef.current;
   if (!vi) { pendingBboxRef.current = focusBbox; return; }

@@ -1,0 +1,6 @@
+@AOM_Maps_HostAddress = http://localhost:5085
+
+GET {{AOM_Maps_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

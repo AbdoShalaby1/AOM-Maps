@@ -1,0 +1,37 @@
+/**
+ * MapViewerPage styles
+ */
+
+.map-viewer-container {
+  height: 100vh;
+  height: 100dvh;
+  position: relative;
+  background: #0a1929;
+  overflow: hidden;
+  font-family: sans-serif;
+}
+
+.map-viewer-container.loading,
+.map-viewer-container.error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader {
+  color: #667eea;
+  font-size: 18px;
+  text-align: center;
+}
+
+.error-message {
+  color: #ff6b6b;
+  font-size: 18px;
+  text-align: center;
+  padding: 20px;
+}
+
+.map-canvas {
+  width: 100%;
+  height: 100%;
+}

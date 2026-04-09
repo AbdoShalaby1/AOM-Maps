@@ -1,0 +1,14 @@
+/* Add this to your CSS to ensure the map fills the space */
+#root {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+body {
+  display: block !important;
+}
+

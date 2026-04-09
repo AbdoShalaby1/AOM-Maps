@@ -1,0 +1,1 @@
+export type MapMode = 'hidden' | 'sidebar' | 'full';

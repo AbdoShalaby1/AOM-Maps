@@ -31,7 +31,7 @@ function App() {
       <div className="flex-1 relative h-full transition-all duration-500">
         <MapViewerPage size={mapSize} setSize={setMapSize} setSidebarCountry={setsidebarCountry} setSimilarCountries={setSimilarCountries}/>
       </div>
-        {mapSize === 'sidebar' && <NeighborStrap neighbors={similarCountries} />}
+        {mapSize === 'sidebar' && sidebarCountry != null && <NeighborStrap neighbors={similarCountries} />}
         <Searchbar isVisible={mapSize !== 'hidden'} mapMode={mapSize} /> 
     </div>
   );

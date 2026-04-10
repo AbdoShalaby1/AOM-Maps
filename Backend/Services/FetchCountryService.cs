@@ -10,9 +10,10 @@ namespace AOM_Maps.Services
         public async Task<CountryDTO?> FetchCountryOnline(string country)
         {   
             var response = await _aisummary.SummarizeCountryWiki(country);
+            response.Lang = "ar";
             return response;
         }
-        public async Task<CountryDTO?> FetchCountryDatabase(string country)
+        public async Task<CountryDTO?> FetchCountryDatabase(string country, string lang = "en")
         {
             var data = await _context.Countries
                     .Include(c => c.SportTeams)
@@ -21,7 +22,7 @@ namespace AOM_Maps.Services
                     .Include(c => c.Landmarks)
                     .Include(c => c.History)
                     .Include(c => c.Currency)
-                    .FirstOrDefaultAsync(x => x.Name == country);
+                    .FirstOrDefaultAsync(x => x.Name == country && x.Lang == lang);
 
             if (data is not null)
             {
@@ -30,7 +31,7 @@ namespace AOM_Maps.Services
             return null;
         }
 
-        public async Task<List<string>> FetchSimilarCountries(CountryDTO data)
+        public async Task<List<string>> FetchSimilarCountries(CountryDTO data, string lang = "en")
         {
             var similar = await _context.Countries
             .Select(c => new
@@ -40,9 +41,10 @@ namespace AOM_Maps.Services
                 SameContinent = c.Continent == data.Continent,
                 SameCurrency = c.Currency.ISO == data.Currency.ISO,
                 SameLanguage = c.Languages.Any(l => data.Languages.Contains(l.Name)),
-                IsTarget = c.Name == data.Name
+                IsTarget = c.Name == data.Name,
+                c.Lang
             })
-            .Where(c => !c.IsTarget && (c.SameHDI || c.SameContinent || c.SameCurrency || c.SameLanguage))
+            .Where(c => !c.IsTarget && (c.SameHDI || c.SameContinent || c.SameCurrency || c.SameLanguage) && c.Lang == lang)
             .OrderByDescending(c =>
                 (c.SameHDI ? 1 : 0) +
                 (c.SameContinent ? 1 : 0) +

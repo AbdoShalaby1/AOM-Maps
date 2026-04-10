@@ -9,7 +9,7 @@ namespace AOM_Maps.Services
     {
         private readonly AppDbContext _context = context;
 
-        public async Task Save(CountryDTO data)
+        public async Task<Country?> Save(CountryDTO data)
         {
             // transaction because all or none, we dont want to save currency without country
             using (var transaction = await _context.Database.BeginTransactionAsync())
@@ -52,12 +52,14 @@ namespace AOM_Maps.Services
                         Dishes = data.Dishes,
                         Landmarks = data.Landmarks,
                         History = data.History,
-                        Media = data.Media
+                        Media = data.Media,
+                        Lang = data.Lang
                     };
 
                     _context.Countries.Add(country);
                     await _context.SaveChangesAsync();
                     await transaction.CommitAsync();
+                    return country;
                 }
                 catch (Exception)
                 {
@@ -65,6 +67,7 @@ namespace AOM_Maps.Services
                     throw;
                 }
             }
+            return null;
         }
     }
 }

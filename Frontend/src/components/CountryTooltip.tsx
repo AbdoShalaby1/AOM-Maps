@@ -1,11 +1,8 @@
-/**
- * CountryTooltip Component
- * Displays country name tooltip on hover
- */
-
 import React from 'react';
 import './CountryTooltip.css';
 import type {CountryTooltipProps} from '../types/CountryTooltipProps';
+import arabicMap from '../countries/countriesARMap.json';
+import { useLang } from '../contexts/lang';
 
 const CountryTooltip: React.FC<CountryTooltipProps> = ({
   visible,
@@ -13,6 +10,8 @@ const CountryTooltip: React.FC<CountryTooltipProps> = ({
   x,
   y
 }) => {
+  const {lang} = useLang();
+
   if (!visible) {
     return null;
   }
@@ -31,7 +30,8 @@ const CountryTooltip: React.FC<CountryTooltipProps> = ({
               display: visible ? 'block' : 'none'
             }}
     >
-      {countryName}
+      {/* @ts-expect-error : always exists */}
+      {lang === "en" ? countryName : arabicMap[countryName]}
     </div>
   );
 };

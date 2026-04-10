@@ -8,15 +8,15 @@ namespace AOM_Maps.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CountriesController(AppDbContext _context, SaveCountry _saveCountry, FetchCountryService _fetchService, DownloadMedia _downloadMedia) : ControllerBase
+    public class CountriesController(Translate _translate, AppDbContext _context, SaveCountry _saveCountry, FetchCountryService _fetchService, DownloadMedia _downloadMedia) : ControllerBase
     {
         [HttpGet("{country}")]
-        public async Task<ActionResult<CountryDTO?>> GetCountry(string country)
+        public async Task<ActionResult<CountryDTO?>> GetCountry(string country, [FromQuery] string lang = "en")
         {
             CountryDTO resp = null!;
             try
             {
-                var data = await _fetchService.FetchCountryDatabase(country);
+                var data = await _fetchService.FetchCountryDatabase(country,lang);
                 if (data is not null)
                 {
                     resp = data;
@@ -43,8 +43,8 @@ namespace AOM_Maps.Controllers
                     }
                 }
                 
-                await _downloadMedia.FetchAndSaveMediaUrlsAsync(resp);
-                var similar = await _fetchService.FetchSimilarCountries(resp);
+                await _downloadMedia.FetchAndSaveMediaUrlsAsync(resp,lang);
+                var similar = await _fetchService.FetchSimilarCountries(resp,lang);
 
                 return Ok(new { target = resp, similar });
             }
@@ -62,7 +62,25 @@ namespace AOM_Maps.Controllers
 
 
 
+        [HttpGet("translate/{country}")]
+        public async Task<IActionResult> TranslateCountry(string country)
+        {
+            try
+            {
+                await _translate.TranslateCountries(country);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                // Extract the status code from the exception message (e.g., "429 Too Many Requests")
+                if (ex.Message.Contains("429")) return StatusCode(429);
+                if (ex.Message.Contains("401") || ex.Message.Contains("403")) return StatusCode(403);
+                if (ex.Message.Contains("400")) return StatusCode(400);
 
+                // Fallback for everything else
+                return StatusCode(500);
+            }
+        }
 
 
 

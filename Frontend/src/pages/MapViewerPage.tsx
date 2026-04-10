@@ -9,6 +9,9 @@ import type { MapMode } from '../types/MapMode';
 import type { MapViewerProps } from '../types/MapViewerProps';
 import getCountry from '../services/GetCountryData';
 import { useNavigate, useParams } from 'react-router-dom';
+import arabicMap from '../countries/countriesARMap.json';
+import englishMap from '../countries/countriesENMap.json';
+import { useLang } from '../contexts/lang';
 
 const mapStyles: Record<MapMode, string> = {
 
@@ -28,6 +31,7 @@ const MapViewerPage: React.FC<MapViewerProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [cursor, setCursor] = useState("default");
   const navigate = useNavigate();
+  const { lang } = useLang();
 const { country } = useParams<{ country: string }>();
 const [focusBbox, setFocusBbox] = useState<[number, number, number, number] | null>(null);
 const justClickedRef = useRef(false);
@@ -51,7 +55,7 @@ const justClickedRef = useRef(false);
   }, []);
 
   useEffect(() => {
-  if (!country || isLoading || !GeoJsonService.IsCountryValid(country.replaceAll('-',' '))) 
+  if (!country || isLoading || !GeoJsonService.IsCountryValid(country.replaceAll('-',' '),lang)) 
     {
       setFocusBbox(null);
       navigate('/');
@@ -65,7 +69,11 @@ const justClickedRef = useRef(false);
   if (!justClickedRef.current) {
     // Direct URL navigation → need to zoom manually
     const feature = GeoJsonService.getFeatures().find(
-      f => f.properties.name?.toLowerCase() === country.toLowerCase().replaceAll('-',' ')
+      f => {
+        if (lang === "en") return f.properties.name?.toLowerCase() === country.toLowerCase().replaceAll('-',' ')
+          // @ts-expect-error : always exists
+          else return f.properties.name?.toLowerCase() === englishMap[country.replaceAll('-',' ')].toLowerCase().replaceAll('-',' ')
+        }
     );
     if (feature?.focusBbox) {
       console.log(feature.focusBbox);
@@ -76,7 +84,7 @@ const justClickedRef = useRef(false);
     justClickedRef.current = false;
     setFocusBbox(null);
   }
-    getCountry(country.replaceAll('-',' '))
+    getCountry(country.replaceAll('-',' '),lang)
       .then(data => {
         setSidebarCountry(data.target);
         setSimilarCountries(data.similar);
@@ -113,7 +121,11 @@ const handleCountryClick = (latLon: LatLon) => {
   const clickedCountry = GeoJsonService.getCountryFeature(latLon.lat, latLon.lon) ?? currentCountry;
   if (clickedCountry != null) {
     justClickedRef.current = true;
-    navigate('/' + clickedCountry.properties.name.replace(/ /g, '-'));
+    navigate('/' + (lang === "en" 
+      ? clickedCountry.properties.name.replace(/ /g, '-') 
+      // @ts-expect-error : always exists
+    : arabicMap[clickedCountry.properties.name].replace(/ /g, '-'))
+);
   }
 };
 

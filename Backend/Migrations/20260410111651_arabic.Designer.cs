@@ -3,6 +3,7 @@ using AOM_Maps.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AOM_Maps.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260410111651_arabic")]
+    partial class arabic
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -124,8 +127,6 @@ namespace AOM_Maps.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CountryARId");
 
                     b.HasIndex("CountryId");
 
@@ -292,11 +293,6 @@ namespace AOM_Maps.Migrations
 
             modelBuilder.Entity("AOM_Maps.Models.CountryMedia", b =>
                 {
-                    b.HasOne("AOM_Maps.Models.Country", "CountryAR")
-                        .WithMany("ArabicMedia")
-                        .HasForeignKey("CountryARId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
                     b.HasOne("AOM_Maps.Models.Country", "Country")
                         .WithMany("Media")
                         .HasForeignKey("CountryId")
@@ -304,8 +300,6 @@ namespace AOM_Maps.Migrations
                         .IsRequired();
 
                     b.Navigation("Country");
-
-                    b.Navigation("CountryAR");
                 });
 
             modelBuilder.Entity("AOM_Maps.Models.Dish", b =>
@@ -365,8 +359,6 @@ namespace AOM_Maps.Migrations
 
             modelBuilder.Entity("AOM_Maps.Models.Country", b =>
                 {
-                    b.Navigation("ArabicMedia");
-
                     b.Navigation("Dishes");
 
                     b.Navigation("History");

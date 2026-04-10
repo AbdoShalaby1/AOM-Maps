@@ -51,7 +51,7 @@ const NeighborStrap = ({ neighbors }: Props) => {
           {neighbors.map((country) => (
             <button 
               key={country} 
-              onClick={async () => navigate(`/${country}`)}
+              onClick={async () => navigate(`/${country.replaceAll(" ","-")}`)}
               className="group flex-shrink-0 flex items-center gap-2
                          bg-slate-900/80 backdrop-blur-xl
                          border border-white/20 

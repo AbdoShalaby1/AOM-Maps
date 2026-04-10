@@ -1,16 +1,18 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaMagnifyingGlass, FaXmark } from 'react-icons/fa6';
+import { FaMagnifyingGlass, FaSun, FaXmark } from 'react-icons/fa6';
 import { useFuzzySearch } from '../services/SearchService';
 import type { MapMode } from '../types/MapMode';
+import { useLang } from '../contexts/lang';
 
 const Searchbar = ({ isVisible, mapMode }: { isVisible: boolean; mapMode: MapMode }) => {
-  const MAX_HISTORY_ITEMS = 8;
+  const MAX_HISTORY_ITEMS = 5;
   const SEARCH_HISTORY_KEY = 'country-search-history';
   const [query, setQuery] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [, setFocusVersion] = useState(0);
   const [history, setHistory] = useState<string[]>([]);
+  const {lang , toggleLang} = useLang();
   
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -19,7 +21,7 @@ const Searchbar = ({ isVisible, mapMode }: { isVisible: boolean; mapMode: MapMod
 
   // eslint-disable-next-line react-hooks/refs
   const isInputActive = inputRef.current === document.activeElement;
-  const results = useFuzzySearch(query) as string[];
+  const results = useFuzzySearch(query, 5, lang) as string[];
   const showHistory = isInputActive && query.length === 0 && history.length > 0;
   const dropdownItems = showHistory ? history : results;
 
@@ -40,6 +42,10 @@ const Searchbar = ({ isVisible, mapMode }: { isVisible: boolean; mapMode: MapMod
       setHistory([]);
     }
   }, []);
+
+  const changeLang = () => {
+    toggleLang();
+  }
 
   const persistHistory = useCallback((items: string[]) => {
     setHistory(items);
@@ -130,12 +136,9 @@ const Searchbar = ({ isVisible, mapMode }: { isVisible: boolean; mapMode: MapMod
       : 'fixed top-3 left-3 right-3 md:top-4 md:left-10 md:right-auto md:translate-x-0';
 
   return (
-    <div
-      ref={containerRef}
-      className={`${positionClass} z-[45] w-[calc(100vw-1.5rem)] sm:w-72 md:w-80 lg:w-96`}
-    >
+    <div ref={containerRef} className={`${positionClass} z-[45] flex items-center gap-2 w-fit`}>
       {/* Search Input Container */}
-      <div className="relative flex items-center bg-white h-12 rounded-full border border-slate-200 shadow-xl">
+     <div className="relative flex items-center bg-white h-12 rounded-full border border-slate-200 shadow-xl w-[calc(100vw-8rem)] sm:w-72 md:w-80 lg:w-96 shrink-0">
         {/* Search Icon (decorative) */}
         <div className="absolute left-3 top-0 h-full w-10 flex items-center justify-center pointer-events-none">
           <FaMagnifyingGlass className="text-gray-400" size={16} />
@@ -149,7 +152,7 @@ const Searchbar = ({ isVisible, mapMode }: { isVisible: boolean; mapMode: MapMod
           onFocus={() => setFocusVersion((v) => v + 1)}
           onBlur={() => requestAnimationFrame(() => setFocusVersion((v) => v + 1))}
           onKeyDown={handleKeyDown}
-          placeholder="Search Countries..."
+          placeholder={lang === "en" ? "Search Countries..." : "ابحث عن الدول"}
           className="w-full bg-transparent border-none outline-none focus:ring-0 text-sm md:text-base text-gray-800 placeholder:text-gray-400 pl-15 pr-8"
           role="combobox"
           aria-expanded={dropdownItems.length > 0}
@@ -177,9 +180,15 @@ const Searchbar = ({ isVisible, mapMode }: { isVisible: boolean; mapMode: MapMod
           onMouseDown={(e) => e.preventDefault()}
           className="absolute top-full left-0 w-full mt-2 bg-white border border-slate-200 rounded-xl shadow-2xl py-2 z-[100] max-h-60 overflow-y-auto overscroll-contain animate-in fade-in slide-in-from-top-2"
           role="listbox"
+          
           aria-label={showHistory ? 'Recent searches' : 'Search results'}
         >
-          {dropdownItems.map((name: string, index: number) => (
+          {dropdownItems
+          .filter((name: string) => {
+            const isArabic = /[\u0600-\u06FF]/.test(name);
+            return lang === "ar" ? isArabic : !isArabic;
+          })
+          .map((name: string, index: number) => (
             <li
               key={name}
               id={`option-${index}`}
@@ -206,7 +215,23 @@ const Searchbar = ({ isVisible, mapMode }: { isVisible: boolean; mapMode: MapMod
             </li>
           ))}
         </ul>
+        
       )}
+      <div className="flex items-center gap-1">
+        <button 
+          className="cursor-pointer w-10 h-10 flex items-center justify-center rounded-full bg-white hover:bg-white/20 backdrop-blur-sm text-gray-600 hover:text-gray-900 transition-all border border-transparent hover:border-slate-200 shadow-none hover:shadow-md shadow-xl"
+          aria-label="Change Language"
+          onClick={() => changeLang()}
+        >
+          <img className="w-6 h-6" src={`/${lang}.png`} alt="flag" />
+        </button>
+        <button 
+          className="cursor-pointer w-10 h-10 flex items-center justify-center rounded-full bg-white hover:bg-white/20 backdrop-blur-sm text-gray-600 hover:text-gray-900 transition-all border border-transparent hover:border-slate-200 shadow-none hover:shadow-md shadow-xl"
+          aria-label="Toggle Theme"
+        >
+          <FaSun size={18} />
+        </button>
+      </div>
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import type { GeoJsonData } from "../types/GeoJsonData";
 import type { GeoJsonFeature } from "../types/GeoJsonFeature";
-import countryNames from '../../public/countryNames.json';
+import countryNames from '../countries/countryNames.json';
+import CountryNamesAR from '../countries/countryNamesAR.json';
 
 class GeoJsonService {
   private geoJsonData: GeoJsonData | null = null;
@@ -205,8 +206,10 @@ class GeoJsonService {
     return inside;
   }
 
-  IsCountryValid(name: string): boolean {
-  return countryNames.includes(name);
+  IsCountryValid(name: string, lang: string): boolean {
+    if (lang == "en")
+      return countryNames.includes(name);
+    return CountryNamesAR.includes(name);
 }
 
   /**

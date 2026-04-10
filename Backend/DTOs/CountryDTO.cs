@@ -19,6 +19,7 @@ namespace AOM_Maps.DTOS
         public string Culinary { get; set; } = null!;
         public string Sport { get; set; } = null!;
         public string Economy { get; set; } = null!;
+        public string Lang { get; set; } = null!;
         public Currency Currency { get; set; } = null!;
         [JsonPropertyName("Sport Teams")]
         public List<SportTeam> SportTeams { get; set; } = null!;

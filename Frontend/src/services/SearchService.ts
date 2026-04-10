@@ -1,4 +1,5 @@
-import allCountries from '../../public/countryNames.json';
+import allCountries from '../countries/countryNames.json';
+import allCountriesAR from '../countries/countryNamesAR.json';
 import { useMemo } from 'react';
 
 function scoreMatch(name: string, query: string): number {
@@ -26,15 +27,16 @@ function scoreMatch(name: string, query: string): number {
   return 0;
 }
 
-export function useFuzzySearch(query: string, maxResults = 8): string[] {
+export function useFuzzySearch(query: string, maxResults = 5, lang = "en"): string[] {
   return useMemo(() => {
     if (!query.trim()) return [];
+    const sourceList = lang === "en" ? allCountries : allCountriesAR;
 
-    return allCountries
+    return sourceList
       .map(name => ({ name, score: scoreMatch(name, query) }))
       .filter(item => item.score > 0)
       .sort((a, b) => b.score - a.score || a.name.localeCompare(b.name))
       .slice(0, maxResults)
       .map(item => item.name);
-  }, [query, maxResults]);
+  }, [query, lang, maxResults]);
 }

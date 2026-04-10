@@ -154,7 +154,7 @@ const SidePanel = ({
                 ].map((item, i) => (
                   <div key={i} className={`bg-white p-3 md:p-4 rounded-lg border border-slate-200 ${item.bg || ''}`}>
                     <p className="text-[10px] md:text-xs font-bold text-slate-600 uppercase tracking-widest mb-1">{item.label}</p>
-                    <p className="text-sm md:text-base font-black text-slate-900 truncate">{item.value}</p>
+                    <p className="text-sm md:text-base font-black text-slate-900">{item.value}</p>
                   </div>
                 ))}
               </div>
@@ -244,8 +244,8 @@ const SidePanel = ({
                         />
                       )}
                       <div className="p-4 md:p-5">
-                        <h4 className="font-bold text-slate-900 text-base md:text-lg mb-2 group-hover:text-slate-700 transition-colors truncate">{site.title}</h4>
-                        <p className="text-slate-600 text-xs md:text-sm leading-relaxed line-clamp-4">{site.description}</p>
+                        <h4 className="font-bold text-slate-900 text-base md:text-lg mb-2 group-hover:text-slate-700 transition-colors">{site.title}</h4>
+                        <p className="text-slate-600 text-xs md:text-sm leading-relaxed">{site.description}</p>
                       </div>
                     </div>
                   );
@@ -270,7 +270,7 @@ const SidePanel = ({
                   )}
                   <div className="flex-1 min-w-0">
                     <p className="text-[10px] md:text-xs font-bold text-slate-500 uppercase tracking-wider">President</p>
-                    <p className="text-base md:text-lg font-black text-slate-800 truncate">{displayCountry.president}</p>
+                    <p className="text-base md:text-lg font-black text-slate-800">{displayCountry.president}</p>
                   </div>
                 </div>
                 <p className="text-sm md:text-base text-slate-700 leading-relaxed">{displayCountry.politics}</p>
@@ -327,10 +327,10 @@ const SidePanel = ({
                     <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-slate-200 flex flex-col hover:shadow-md transition-all">
                       <div className="p-4 md:p-5">
                         <span className="text-slate-600 font-black text-[10px] md:text-xs uppercase tracking-widest mb-2 block">Era {eraIndex + 1}</span>
-                        <h4 className="font-black text-slate-900 text-base md:text-lg mb-2 md:mb-3 leading-tight truncate">
+                        <h4 className="font-black text-slate-900 text-base md:text-lg mb-2 md:mb-3 leading-tight">
                           {displayCountry.history[eraIndex]?.title}
                         </h4>
-                        <p className="text-slate-600 text-xs md:text-sm leading-relaxed line-clamp-6">
+                        <p className="text-slate-600 text-xs md:text-sm leading-relaxed">
                           {displayCountry.history[eraIndex]?.description}
                         </p>
                       </div>
@@ -342,8 +342,8 @@ const SidePanel = ({
                   {displayCountry.history.map((era, index) => (
                     <div key={index} className="flex flex-col bg-white rounded-xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition-all">
                       <div className="p-3 md:p-4">
-                        <h3 className="font-bold text-slate-900 text-sm md:text-base mb-1 md:mb-2 truncate">{era.title}</h3>
-                        <p className="text-slate-600 text-xs md:text-sm leading-relaxed line-clamp-3">{era.description}</p>
+                        <h3 className="font-bold text-slate-900 text-sm md:text-base mb-1 md:mb-2">{era.title}</h3>
+                        <p className="text-slate-600 text-xs md:text-sm leading-relaxed">{era.description}</p>
                       </div>
                     </div>
                   ))}
@@ -373,8 +373,8 @@ const SidePanel = ({
                         />
                       )}
                       <div className="p-4 md:p-5 flex-1">
-                        <h4 className="text-slate-800 font-black text-base md:text-lg mb-2 truncate">{dish.title}</h4>
-                        <p className="text-slate-600 text-xs md:text-sm leading-relaxed line-clamp-4">{dish.description}</p>
+                        <h4 className="text-slate-800 font-black text-base md:text-lg mb-2">{dish.title}</h4>
+                        <p className="text-slate-600 text-xs md:text-sm leading-relaxed">{dish.description}</p>
                       </div>
                     </div>
                   );

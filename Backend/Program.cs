@@ -17,6 +17,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<SaveCountry>();
 builder.Services.AddScoped<FetchCountryService>();
 builder.Services.AddScoped<AISummary>();
+builder.Services.AddScoped<Translate>();
 builder.Services.AddScoped<DownloadMedia>();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

@@ -61,6 +61,16 @@ namespace AOM_Maps.Context
                 .WithOne(m => m.Country)
                 .HasForeignKey(m => m.CountryId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Country>()
+                .HasMany(c => c.ArabicMedia)
+                .WithOne(m => m.CountryAR)
+                .HasForeignKey(m => m.CountryARId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Country>()
+                .HasIndex(c => new { c.Lang, c.Name })
+                .HasDatabaseName("IX_Countries_Lang_Name");
         }
     }
 }

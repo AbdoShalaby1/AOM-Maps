@@ -13,19 +13,31 @@ namespace AOM_Maps.Services
         /// <summary>
         /// Fetches media URLs from DuckDuckGo and Wikipedia, and saves them to the database.
         /// </summary>
-        public async Task<List<CountryMedia>> FetchAndSaveMediaUrlsAsync(CountryDTO countryDto)
+        public async Task<List<CountryMedia>> FetchAndSaveMediaUrlsAsync(CountryDTO countryDto, string lang = "en")
         {
             Console.WriteLine($"[LOG] Starting FetchAndSaveMediaUrlsAsync for: {countryDto.Name}");
-
             var existingCountry = await _context.Countries
-            .Include(c => c.Media)
-            .FirstOrDefaultAsync(c => c.Name == countryDto.Name);
+                .Include(c => c.Media)
+                .Include(c => c.ArabicMedia)
+                .FirstOrDefaultAsync(c => c.Name == countryDto.Name);
 
-            if (existingCountry?.Media.Any() == true)
+            if (lang == "en")
             {
-                Console.WriteLine($"[LOG] Media already exists in DB for {countryDto.Name}. Skipping fetch.");
-                countryDto.Media = existingCountry.Media;
-                return existingCountry.Media;
+                if (existingCountry?.Media.Any() == true)
+                {
+                    Console.WriteLine($"[LOG] Media already exists in DB for {countryDto.Name}. Skipping fetch.");
+                    countryDto.Media = existingCountry.Media;
+                    return existingCountry.Media;
+                }   
+            }    
+            else
+            {
+                if (existingCountry?.ArabicMedia.Any() == true)
+                {
+                    Console.WriteLine($"[LOG] Media already exists in DB for {countryDto.Name}. Skipping fetch.");
+                    countryDto.Media = existingCountry.ArabicMedia;
+                    return existingCountry.ArabicMedia;
+                }
             }
 
             var mediaList = new List<CountryMedia>();

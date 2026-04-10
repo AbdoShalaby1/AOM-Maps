@@ -29,7 +29,8 @@ namespace AOM_Maps.Services
                 Dishes = data.Dishes,
                 Landmarks = data.Landmarks,
                 History = data.History,
-                Media = data.Media
+                Media = data.Media,
+                Lang = data.Lang
             };
         }
     }

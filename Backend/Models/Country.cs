@@ -28,9 +28,14 @@ namespace AOM_Maps.Models
         public List<SportTeam> SportTeams { get; set; } = null!;
         public List<Language> Languages { get; set; } = null!;
         public List<CountryMedia>? Media { get; set; }
+        public List<CountryMedia>? ArabicMedia { get; set; }
+
         public List<Dish> Dishes { get; set; } = null!;
 
         public List<Landmark> Landmarks { get; set; } = null!;
         public List<History> History { get; set; } = null!;
+
+        [MaxLength(2)]
+        public string Lang { get; set; } = "en";
     }
 }

@@ -16,7 +16,7 @@ const api = axios.create({
   },
 });
 
-export default async function getCountry(name: string) {
-    const response = await api.get(`/api/Countries/${name}`);
+export default async function getCountry(name: string, lang: string) {
+    const response = await api.get(`/api/Countries/${name}?lang=${lang}`);
     return response.data;
 }

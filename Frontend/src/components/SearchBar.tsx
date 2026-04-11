@@ -91,9 +91,9 @@ const Searchbar = ({ isVisible, mapMode }: { isVisible: boolean; mapMode: MapMod
     toggleLang();
     if (!country) return;
     if (lang === "ar") {
-      navigate(`/${enMap[country.replaceAll("-", " ")].replaceAll(" ", "-")}`);
+      navigate(`/${enMap[country.replaceAll("-", " ") as keyof typeof enMap].replaceAll(" ", "-")}`);
     } else {
-      handleSelect(arMap[country.replaceAll("-", " ").replaceAll(" ", "-")]);
+      handleSelect(arMap[country.replaceAll("-", " ").replaceAll(" ", "-") as keyof typeof arMap]);
     }
   };
 

@@ -32,7 +32,7 @@ function performZoom(
   paddedRect.x -= paddedRect.width * (isMobile ? 0 : 0.4);
   // On mobile with bottom sidebar open, bias zoom target upward into visible map area.
   if (isMobile) {
-    paddedRect.y += paddedRect.height * 0.4;
+    paddedRect.y += paddedRect.height * 0.55;
   }
   console.log("Zoomed!");
   viewerInstance.viewport.fitBoundsWithConstraints(paddedRect, false);

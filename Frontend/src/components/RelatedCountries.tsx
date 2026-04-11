@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa6';
+import { useLang } from '../contexts/lang';
 
 interface Props {
   neighbors: string[];
@@ -9,6 +10,7 @@ interface Props {
 const NeighborStrap = ({ neighbors }: Props) => {
   const [isVisible, setIsVisible] = useState(true);
   const navigate = useNavigate();
+  const {lang} = useLang();
 
   if (!neighbors || neighbors.length === 0) return null;
 
@@ -31,7 +33,7 @@ const NeighborStrap = ({ neighbors }: Props) => {
             <span className="relative inline-flex rounded-full h-1.5 w-1.5 md:h-2 md:w-2 bg-blue-600"></span>
           </span>
           <p className="text-[8px] md:text-[10px] uppercase tracking-[0.16em] md:tracking-[0.3em] text-slate-300 font-bold">
-            See Also
+            {lang === "en" ? "See Also" :"استكشف المزيد"}
           </p>
         </div>
         <button

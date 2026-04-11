@@ -4,15 +4,18 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './index.css'
 import App from './App.tsx'
 import { LangProvider } from './contexts/lang.tsx'
+import { ThemeProvider } from './contexts/theme.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <LangProvider>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/:country?" element={<App />} />
-      </Routes>
-    </BrowserRouter>
-    </LangProvider>
+    <ThemeProvider>
+      <LangProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/:country?" element={<App />} />
+        </Routes>
+      </BrowserRouter>
+      </LangProvider>
+    </ThemeProvider>
   </StrictMode>,
 )

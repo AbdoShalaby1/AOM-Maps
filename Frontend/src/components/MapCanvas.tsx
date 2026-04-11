@@ -4,6 +4,7 @@ import OpenSeadragon from 'openseadragon';
 import CoordinateService from '../services/CoordinateService';
 import GeoJsonService from '../services/GeoJsonService';
 import type { MapCanvasProps } from '../types/MapCanvasProps';
+import { useTheme } from '../contexts/theme';
 
 function performZoom(
   viewerInstance: OpenSeadragon.Viewer,
@@ -168,7 +169,7 @@ useEffect(() => {
     mouseTrackerRef.current = tracker;
   });
   
-
+  
   return () => {
     if (mouseTrackerRef.current) {
       mouseTrackerRef.current.destroy();
@@ -211,7 +212,7 @@ useEffect(() => {
     pendingBboxRef.current = focusBbox;
   }
 }, [focusBbox]);
-
+const {theme} = useTheme();
   return (
     <div
       ref={containerRef}
@@ -223,7 +224,8 @@ useEffect(() => {
       position: 'relative',
       top: 0,
       left: 0,
-      backgroundColor: '#a2caff'
+      backgroundColor: '#a2caff',
+      filter: theme === "light" ? '' : 'brightness(0.85) invert(1) contrast(1.25) sepia(0.4) saturate(0.6) hue-rotate(180deg)'
       }}
     />
   );

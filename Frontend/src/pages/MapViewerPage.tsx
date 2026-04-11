@@ -157,14 +157,13 @@ const handleCountryClick = (latLon: LatLon) => {
       </div>
     );
   }
-
   return (
     <div className={"map-viewer-container"}>
       <MapCanvas
         onCountryHover={handleCountryHover}
         onCountryClick={handleCountryClick}
         mapImageUrl="/MapFiles/map.dzi"
-        className={"map-canvas cursor-"+cursor+" "+mapStyles[size]}
+        className={` map-canvas cursor-`+cursor+" "+mapStyles[size]}
         currentCountry={currentCountry}
         focusBbox={focusBbox}
         mapMode={size}

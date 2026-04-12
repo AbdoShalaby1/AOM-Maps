@@ -304,7 +304,7 @@ const SidePanel = ({
                   <FaScaleBalanced className={`text-base md:text-lg ${dark ? 'text-slate-400' : 'text-slate-600'}`} />
                   {lang === "en" ? "Governance" : "السياسة"}
                 </h3>
-                <div className={`flex flex-col sm:flex-row items-start gap-3 md:gap-4 mb-3 md:mb-4 p-3 md:p-4 rounded-lg border
+                <div className={`flex flex-row items-start gap-3 md:gap-4 mb-3 md:mb-4 p-3 md:p-4 rounded-lg border
                   ${dark
                     ? 'bg-slate-700 border-slate-600'
                     : 'bg-gradient-to-r from-slate-50 to-slate-100 border-slate-200'}`}

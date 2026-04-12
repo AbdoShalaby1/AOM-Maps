@@ -1,6 +1,9 @@
+import { useTheme } from "../contexts/theme";
+
 export default function ConsultingAI() {
+  const {theme} = useTheme();
   return (
-    <div className="flex flex-col items-center justify-center py-20 space-y-10 bg-white font-sans">
+    <div className={`flex flex-col items-center justify-center py-20 space-y-10 ${theme === "light" ? "bg-white" : "bg-slate-900"} font-sans`}>
       <style>{`
         /* The original star shape morphs/pulses gently */
         @keyframes star-breathe {

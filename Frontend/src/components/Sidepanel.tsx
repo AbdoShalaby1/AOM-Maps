@@ -201,9 +201,8 @@ const SidePanel = ({
                   <div className={`p-3 md:p-4 rounded-lg border
                     ${dark ? 'bg-slate-700 border-slate-600' : 'bg-white border-slate-200'}`}
                   >
-                    <audio controls controlsList="nodownload" className="w-full max-w-full outline-none transition-opacity duration-300 rounded"
-                      title={`${displayCountry.name} National Anthem`}
-                    >
+                    <audio controls controlsList="nodownload" className={`w-full max-w-full outline-none transition-opacity duration-300 rounded ${theme === 'dark' ? '[color-scheme:dark]' : ''}`} 
+                      title={`${displayCountry.name} National Anthem`}>
                       <source src={getMediaUrl('anthem')} />
                     </audio>
                   </div>

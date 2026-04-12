@@ -93,7 +93,7 @@ const Searchbar = ({ isVisible, mapMode }: { isVisible: boolean; mapMode: MapMod
     if (lang === "ar") {
       navigate(`/${enMap[country.replaceAll("-", " ") as keyof typeof enMap].replaceAll(" ", "-")}`);
     } else {
-      handleSelect(arMap[country.replaceAll("-", " ").replaceAll(" ", "-") as keyof typeof arMap]);
+      navigate(`/${arMap[country.replaceAll("-", " ") as keyof typeof arMap].replaceAll(" ", "-")}`);
     }
   };
 
